@@ -70,7 +70,7 @@ class User extends Authenticatable
         parent::boot();
 
         static::creating(function ($model) {
-            $model->uuid = Str::uuid();
+            $model->id = Str::uuid();
             $model->ref_num = "SRP".rand(100000000, 999999999);
             $model->password = Hash::make('12345678');
         });
