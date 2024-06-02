@@ -3,13 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasUuids, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -17,9 +22,17 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'ref_num',
+        'surname',
+        'first_name',
+        'middle_name',
+        'phone',
         'email',
         'password',
+        'user_type',
+        'is_admin',
+        'admin_level',
+        'is_active',
     ];
 
     /**
@@ -43,5 +56,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Automatically assigning
+     * 1. UUID
+     * 2. Ref Number
+     * 3. Password
+     * to Every created Record on this model
+     */
+    protected static function booted()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->uuid = Str::uuid();
+            $model->ref_num = "SRP".rand(100000000, 999999999);
+            $model->password = Hash::make('12345678');
+        });
     }
 }
