@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Course extends Model
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    use HasFactory, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +28,7 @@ class Course extends Model
     /**
      * Automatically assigning
      * 1. Ref Number
+     * 2. UUID
      * to Every created Record on this model
      */
     protected static function booted()
@@ -36,6 +37,7 @@ class Course extends Model
 
         static::creating(function ($model) {
             $model->ref_num = "SCR".rand(100000000, 999999999);
+            $model->uuid = Str::uuid();
         });
     }
 }

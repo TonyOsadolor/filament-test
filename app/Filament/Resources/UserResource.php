@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use App\Traits\ResourceMasksRecordId;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -19,6 +20,8 @@ use Filament\Tables\Grouping\Group;
 
 class UserResource extends Resource
 {
+    use ResourceMasksRecordId;
+
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-s-users';
@@ -29,12 +32,25 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('phone')
                     ->tel()
-                    ->maxLength(255)
-                    ->default(null),
+                    ->maxLength(11)
+                    ->required()
+                    ->unique(column: 'phone',ignoreRecord: true)
+                    ->validationMessages([
+                        'unique' => 'The :attribute has already been registered.',
+                    ])
+                    ->label(__('Student Phone'))
+                    ->placeholder('Enter Phone'),
+                    // ->hidden(fn (string $operation): bool => $operation === 'create'),
+                
                 Forms\Components\TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(255),
+                    ->unique(column: 'email',ignoreRecord: true)
+                    ->validationMessages([
+                        'unique' => 'The :attribute has already been registered.',
+                    ])
+                    ->label(__('Student Email'))
+                    ->placeholder('Enter Valid Email'),
             ]);
     }
 

@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Traits\ModelMasksRecordId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,7 +14,15 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasUuids, SoftDeletes;
+    use HasFactory, Notifiable, SoftDeletes, ModelMasksRecordId;
+
+    /**
+     * This is for Tenancy Mode
+     * use ModelMasksRecordId;
+     */
+
+    public const SQID_ALPHABET = "348abe21dc7069f5";
+	public const SQID_MIN_LENGTH = 32;
 
     /**
      * The attributes that are mass assignable.

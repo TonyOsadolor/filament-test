@@ -18,6 +18,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\Resources\AdminPanelProviderResource\Widgets\StatsOverview;
+use App\Http\Middleware\ResolveTenantSqid;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -53,6 +54,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->middleware([ResolveTenantSqid::class], true)
             ->authMiddleware([
                 Authenticate::class,
             ]);
