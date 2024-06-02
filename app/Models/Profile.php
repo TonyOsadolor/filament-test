@@ -25,4 +25,11 @@ class Profile extends Model
         'passed_final_exam',
         'completed',
     ];
+
+    public static function initialProfile($user)
+    {
+        $profile = new Profile();
+        $profile->user_id = $user->id;
+        $profile->save();
+    }
 }
