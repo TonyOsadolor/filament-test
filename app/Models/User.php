@@ -83,4 +83,14 @@ class User extends Authenticatable
             $model->password = Hash::make('12345678');
         });
     }
+
+    /**
+     * Get the user's profile
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
 }
