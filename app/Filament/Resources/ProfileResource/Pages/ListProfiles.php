@@ -16,4 +16,11 @@ class ListProfiles extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            ProfileResource\Widgets\ProfileOverview::class,
+        ];
+    }
 }

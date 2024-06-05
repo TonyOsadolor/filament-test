@@ -62,6 +62,9 @@ class UserResource extends Resource
                     ->orderQueryUsing(fn (Builder $query, string $direction) => $query->orderBy('created_at', $direction)),
                 ])
             ->columns([
+                Tables\Columns\TextColumn::make('ref_num')
+                    ->label('Ref #')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('surname'),
                 Tables\Columns\TextColumn::make('first_name')
                     ->label('Other Names')
@@ -78,7 +81,14 @@ class UserResource extends Resource
                     ->boolean()
             ])
             ->filters([
-                //
+                Tables\Filters\Filter::make('is_admin')
+                    ->label('Admin')
+                    ->toggle()
+                    ->query(fn (Builder $query): Builder => $query->where('is_admin', 1)),
+                Tables\Filters\Filter::make('is_active')
+                    ->label('Active Users')
+                    -> toggle()
+                    ->query(fn (Builder $query): Builder => $query->where('is_active', 1))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

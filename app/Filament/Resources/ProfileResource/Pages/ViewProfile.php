@@ -24,6 +24,8 @@ class ViewProfile extends ViewRecord
     {
         return $infolist
             ->schema([
+                Infolists\Components\TextEntry::make('user.ref_num')
+                    ->label('Student Ref #'),
                 Infolists\Components\TextEntry::make('user.surname')
                     ->label('Surname'),
                 Infolists\Components\TextEntry::make('user.first_name')
@@ -41,10 +43,10 @@ class ViewProfile extends ViewRecord
                 Infolists\Components\TextEntry::make('graduation_year'),
                 Infolists\Components\TextEntry::make('approval_date'),
                 Infolists\Components\TextEntry::make('passed_final_exam'),
-                Infolists\Components\TextEntry::make('is_completed')
+                Infolists\Components\TextEntry::make('completed')
                     ->label('Completed?')
                     ->formatStateUsing(function (Profile $profile) {
-                        if($profile->is_completed === true)
+                        if($profile->completed == true)
                         {return 'Yes';} return 'No';
                     }),
                 Infolists\Components\TextEntry::make('updated_at')
